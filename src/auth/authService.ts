@@ -1,38 +1,42 @@
 import Moralis from 'moralis';
 
 export interface RequestMessage {
-  address: string;
-  chain: string;
-  networkType: string;
+    address: string;
+    chain: string;
+    networkType: string;
+    domain: string;
+    uri: string;
 }
 
-const DOMAIN = 'fuku.xyz';
 const STATEMENT = 'Please sign this message to confirm your identity.';
-const URI = 'https://app.fuku.xyz/';
 const EXPIRATION_TIME = '2023-01-01T00:00:00.000Z';
 const TIMEOUT = 15;
 
 export async function requestMessage({
-  address,
-  chain,
-  networkType,
-}: {
-  address: string;
-  chain: string;
-  networkType: 'evm';
+                                         address,
+                                         chain,
+                                         networkType,
+                                         domain,
+                                         uri
+                                     }: {
+    address: string;
+    chain: string;
+    networkType: 'evm';
+    domain: string;
+    uri: string;
 }) {
-  const result = await Moralis.Auth.requestMessage({
-    address,
-    chain,
-    networkType,
-    domain: DOMAIN,
-    statement: STATEMENT,
-    uri: URI,
-    expirationTime: EXPIRATION_TIME,
-    timeout: TIMEOUT,
-  });
+    const result = await Moralis.Auth.requestMessage({
+        address,
+        chain,
+        networkType,
+        domain,
+        uri,
+        statement: STATEMENT,
+        expirationTime: EXPIRATION_TIME,
+        timeout: TIMEOUT,
+    });
 
-  const { message } = result.toJSON();
+    const {message} = result.toJSON();
 
-  return message;
+    return message;
 }
